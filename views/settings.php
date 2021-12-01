@@ -4,7 +4,7 @@
             <tr>
                 <td>
                     <th>
-                        <label for="on_off">On/Off</label>
+                        <label for="on_off">Off/on</label>
                     </th>
                 </td>
                 <td>
@@ -66,7 +66,18 @@
         </tbody>
     </table>
 
-    <button class="button button-primary" @click="onUpdate">Save Changes</button>
+   <h1>test=  <?php echo get_option('new_option_name'); ?> </h1>
+
+
+   <form method="post" action="options.php">
+       <?php settings_fields('plugin-settings-group'); ?>
+        <?php do_settings_sections( 'plugin-settings-group' ); ?>
+
+         <input type="text" name="new_option_name" value="<?php echo get_option('new_option_name'); ?>" />
+        <?php submit_button(); ?>
+   </form>
+
+    <button class="button button-primary" type="button" @click.prevent.stop="onUpdate">Save Changes</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.0/vue.min.js"></script>
@@ -86,7 +97,26 @@
 
         methods: {
             onUpdate() {
-                alert('1')
+                let data = {
+                    test: '2'
+                };
+
+                let body = [];
+                for (let property in data) {
+                    let encodedKey = encodeURIComponent(property);
+                    let encodedValue = encodeURIComponent(data[property]);
+                    body.push(encodedKey + "=" + encodedValue);
+                }
+
+                body = body.join("&");
+
+                fetch('options.php', { 
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: body,
+                })
             }
         }
     })
