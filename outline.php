@@ -31,6 +31,7 @@ function settings() {
   register_setting( 'plugin-settings-group', 'discipleship_categories' );
   register_setting( 'plugin-settings-group', 'discipleship_pages');
   register_setting( 'plugin-settings-group', 'discipleship_posts');
+  register_setting( 'plugin-settings-group', 'salvation');
 }
 
 function render_plugin_settings_page() {

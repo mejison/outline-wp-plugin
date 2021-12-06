@@ -15,8 +15,10 @@ class Outline {
 		}
 	}
 
-	public static function gformSubmitHook() {
-		self::trackingVisited(true);
+	public static function gformSubmitHook($form) {
+		if(self::isSalvationForm($form['form_id'])) {
+			self::trackingVisited(true);
+		}
 	}
 
 	public static function trackingVisited($isSalvation = false) {
@@ -83,6 +85,11 @@ class Outline {
 		$postID = get_post() ? get_post()->ID : null;
 
 		return in_array($postID, $trackingPosts);
+	}
+
+	private static function isSalvationForm($formID) {
+		$trackingSalvation = get_option('salvation') ? array_keys(get_option('salvation')) : [];
+		return in_array($formID, $trackingSalvation);
 	}
 
 	private static function isDiscipleshipPages() {

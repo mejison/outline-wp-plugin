@@ -3,6 +3,8 @@
     <?php settings_fields('plugin-settings-group'); ?>
     <?php do_settings_sections( 'plugin-settings-group' ); ?>
 
+   
+
     <table class="form-table">
         <tbody>
             <tr>
@@ -25,6 +27,16 @@
                 </th>
             </td>
             <td>
+                <h2>Gravity forms</h2>
+                <ul>
+                    <?php foreach(GFAPI::get_forms() as $form) { ?>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="salvation[<?= $form['id'] ?>]" <?php echo ! empty(get_option('salvation')[$form['id']]) ? 'checked=checked' : ''; ?> /><?= $form['title']; ?>
+                            </label>
+                        </li>
+                    <?php } ?>
+                </ul>
                 <p class="description">
                     Gravity forms hook added on submission for specific form to be selected in settings page (recorded as Salvation eventType)
                 </p>
