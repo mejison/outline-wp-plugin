@@ -1,7 +1,7 @@
 <?php
 
 class Outline {
-    const API_HOST = 'f35a-45-151-239-236.ngrok.io';
+    const API_HOST = 'a451-45-151-239-236.ngrok.io';
 	const API_PORT = 80;
 
     public static function init() {
@@ -15,8 +15,16 @@ class Outline {
 		}
 	}
 
-	public static function trackingVisited() {
+	public static function gformSubmitHook() {
+		self::trackingVisited(true);
+	}
+
+	public static function trackingVisited($isSalvation = false) {
 		$eventType = "visit";
+
+		if ($isSalvation) {
+			$eventType = 'salvation';
+		}
 
 		if (self::isDiscipleshipCategories()) {
 			$eventType = 'discipleship';
@@ -29,7 +37,28 @@ class Outline {
 		if (self::isDiscipleshipPages()) {
 			$eventType = 'discipleship';
 		}
-		
+
+		$latitude = '';
+		$longitude = '';
+
+		if ( ! session_id()) {
+			session_start();
+		}
+
+		if ( ! empty($_SESSION["latitude"]) || ! empty($_SESSION["longitude"])) {
+			$ip = self::get_ip_address() ? : "45.151.239.236";
+			$body = self::get_lat_lng($ip);
+			
+			$latitude = $body->geoplugin_latitude;
+			$longitude = $body->geoplugin_longitude;
+
+			$_SESSION["latitude"] = $latitude;
+			$_SESSION["latitude"] = $longitude;
+		} else {
+			$latitude = $_SESSION["latitude"];
+			$longitude = $_SESSION["longitude"];
+		}
+
 		self::http_post([
 			"vistorID" => time(),
 			"eventType" => $eventType,  // visit | salvation | discipleship
@@ -44,8 +73,8 @@ class Outline {
 			"referrer" => self::get_referer(),
 			"socialSource" => '',
 
-			"latitude" => 50.450001,
-			"longitude" => 30.523333,
+			"latitude" => $latitude,
+			"longitude" => $longitude,
 		], "add");
 	}
 
@@ -124,5 +153,10 @@ class Outline {
 
 	private static function get_language() {
 		return isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'en';
+	}
+
+	private static function get_lat_lng($ip) {
+		$simplified_response = file_get_contents("http://www.geoplugin.net/json.gp?ip=45.151.239.236");
+		return json_decode($simplified_response);
 	}
 }
