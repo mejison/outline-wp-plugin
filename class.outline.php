@@ -1,7 +1,7 @@
 <?php
 
 class Outline {
-    const API_HOST = 'a451-45-151-239-236.ngrok.io';
+    const API_HOST = 'salvation.inspirationhosting.com';
 	const API_PORT = 80;
 
     public static function init() {
@@ -47,37 +47,43 @@ class Outline {
 			session_start();
 		}
 
-		if ( ! empty($_SESSION["latitude"]) || ! empty($_SESSION["longitude"])) {
-			$ip = self::get_ip_address() ? : "45.151.239.236";
+		if ( ! isset($_SESSION["latitude"]) ||  ! isset($_SESSION["longitude"])) {
+			$ip = self::get_ip_address() ? : "161.185.160.93";
 			$body = self::get_lat_lng($ip);
-			
-			$latitude = $body->geoplugin_latitude;
-			$longitude = $body->geoplugin_longitude;
 
-			$_SESSION["latitude"] = $latitude;
-			$_SESSION["latitude"] = $longitude;
+			if ( ! empty($body)) {
+				$latitude = $body->geoplugin_latitude;
+				$longitude = $body->geoplugin_longitude;
+	
+				$_SESSION["latitude"] = $latitude;
+				$_SESSION["latitude"] = $longitude;
+			}
 		} else {
 			$latitude = $_SESSION["latitude"];
 			$longitude = $_SESSION["longitude"];
 		}
 
-		self::http_post([
-			"vistorID" => time(),
-			"eventType" => $eventType,  // visit | salvation | discipleship
-			"ip" => self::get_ip_address(),
-			"url" => self::get_url(),
-			"userAgent" => self::get_user_agent(),
-			"vendorId" => '',
-			"campaignId" => '',
-			"adId" => '',
-			"serverName" => self::get_server_name(),
-			"language" => self::get_language(),
-			"referrer" => self::get_referer(),
-			"socialSource" => '',
+		if ($eventType) {
 
-			"latitude" => $latitude,
-			"longitude" => $longitude,
-		], "add");
+			self::http_post([
+				"vistorID" => time(),
+				"eventType" => $eventType,  // visit | salvation | discipleship
+				"ip" => self::get_ip_address(),
+				"url" => self::get_url(),
+				"userAgent" => self::get_user_agent(),
+				"vendorId" => '',
+				"campaignId" => '',
+				"adId" => '',
+				"serverName" => self::get_server_name(),
+				"language" => self::get_language(),
+				"referrer" => self::get_referer(),
+				"socialSource" => '',
+	
+				"latitude" => $latitude,
+				"longitude" => $longitude,
+			], "add");
+		}
+
 	}
 
 	private static function isDiscipleshipPosts() {
@@ -163,7 +169,14 @@ class Outline {
 	}
 
 	private static function get_lat_lng($ip) {
-		$simplified_response = file_get_contents("http://www.geoplugin.net/json.gp?ip=45.151.239.236");
-		return json_decode($simplified_response);
+		try {
+			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+			header("Cache-Control: post-check=0, pre-check=0", false);
+			header("Pragma: no-cache");
+			$simplified_response = file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip);
+			return json_decode($simplified_response);
+		} catch (Exception $exeption) {
+			return false;
+		}
 	}
 }
