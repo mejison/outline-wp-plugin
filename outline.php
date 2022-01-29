@@ -10,6 +10,7 @@
 
 define( 'OUTLINE__VERSION', '0.1.0' );
 define( 'OUTLINE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'OUTLINE_API_SERVER_NAME', 'https://salvation.inspirationhosting.com');
 
 register_activation_hook( __FILE__, array( 'Outline', 'plugin_activation' ) );
 register_deactivation_hook( __FILE__, array( 'Outline', 'plugin_deactivation' ) );
@@ -25,6 +26,51 @@ function add_settings_page() {
 }
 
 add_action( 'admin_init', 'settings');
+
+function at_rest_visit_endpoint() {
+  Outline::trackingVisited("visit");
+  checkRedirect();
+  return new WP_REST_Response(['message' => 'Successfully created.']);
+}
+
+function at_rest_salvation_endpoint() {
+  Outline::trackingVisited("salvation");
+  checkRedirect();
+  return new WP_REST_Response(['message' => 'Successfully created.']);
+}
+
+function at_rest_discipleship_endpoint() {
+  Outline::trackingVisited("discipleship");
+  checkRedirect();
+  return new WP_REST_Response(['message' => 'Successfully created.']);
+}
+
+function checkRedirect() {
+  if(isset($_GET['redirect-back'])) {
+    header("HTTP/1.1 301 Moved Permanently"); 
+    header("Location: " . $_SERVER['HTTP_REFERER']); 
+    exit();
+  }
+}
+
+function at_rest_init() {
+  // route url: domain.com/wp-json/$namespace/$route
+  $namespace = 'outline/v1';
+  $routeTypes = [
+    'visit',
+    'salvation',
+    'discipleship',
+  ];
+
+  foreach($routeTypes as $type) {
+    register_rest_route($namespace, $type, array(
+      'methods'   => WP_REST_Server::READABLE,
+      'callback'  => 'at_rest_' . $type . '_endpoint'
+    ));
+  }
+}
+
+add_action('rest_api_init', 'at_rest_init');
 
 function settings() {
   register_setting( 'plugin-settings-group', 'on_off' );

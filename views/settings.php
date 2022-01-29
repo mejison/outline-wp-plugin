@@ -40,6 +40,75 @@
                 <p class="description">
                     Gravity forms hook added on submission for specific form to be selected in settings page (recorded as Salvation eventType)
                 </p>
+                <h2>
+                    Buttons
+                </h2>
+                <?php 
+                    ob_start();
+                ?>
+                    <a href="<?php echo isset($_SERVER['HTTPS']) ? 'https' : 'http'; ?>://<?=$_SERVER['SERVER_NAME']?>/wp-json/outline/v1/salvation?redirect-back=1" target="_blank">Yes</a>
+                <?php
+                    $html = ob_get_contents();
+                    ob_end_clean();
+                ?>
+                <section class="copy-section">
+                    <span class="copy-btn" onclick="select_all(event)">
+                        Copy
+                    </span>
+                    <pre><code><?php echo trim(htmlspecialchars($html)); ?></code></pre>
+                </section>
+                <script type="text/javascript">
+                    function select_all(event) {
+                        event.preventDefault();
+                        const input = document.createElement('input');
+                        const html = `<?=$html?>`;
+                        input.value = html.trim();
+                        document.body.appendChild(input);
+                        input.focus();
+                        input.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(input);
+                    }
+                </script>
+                <style>
+                    code {
+                        background-color: #272822;
+                        color: #f8f8f2;
+                        border-radius: 0.3rem;
+                        padding: 4px 5px 5px;
+                        white-space: nowrap;
+                    }
+
+                    pre code {
+                        white-space: inherit;
+                    }
+
+                    pre {
+                        background-color: #272822;
+                        padding: 5px;
+                        border-radius: 0.3em;
+                    }
+
+                    .copy-btn {
+                        color: #fff;
+                        cursor: pointer;
+                    }
+
+                    .copy-btn:hover {
+                        color: #999;
+                    }
+
+                    .copy-section {
+                        position: relative;
+                    }
+
+                    .copy-section .copy-btn {
+                        position: absolute;
+                        right: 5px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+                </style>
             </td>
             </tr>
             <tr>

@@ -17,17 +17,11 @@ class Outline {
 
 	public static function gformSubmitHook($form) {
 		if(self::isSalvationForm($form['form_id'])) {
-			self::trackingVisited(true);
+			self::trackingVisited("salvation");
 		}
 	}
 
-	public static function trackingVisited($isSalvation = false) {
-		$eventType = "visit";
-
-		if ($isSalvation) {
-			$eventType = 'salvation';
-		}
-
+	public static function trackingVisited($eventType = 'visit') {
 		if (self::isDiscipleshipCategories()) {
 			$eventType = 'discipleship';
 		}
