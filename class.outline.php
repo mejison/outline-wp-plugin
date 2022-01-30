@@ -5,7 +5,7 @@ class Outline {
 	const API_PORT = 80;
 
     public static function init() {
-		if( is_admin() ){
+		if( is_admin() || current_user_can('editor') || current_user_can('administrator')) {
 			return;
 		}
 
