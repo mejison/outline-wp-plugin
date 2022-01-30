@@ -28,21 +28,30 @@ function add_settings_page() {
 add_action( 'admin_init', 'settings');
 
 function at_rest_visit_endpoint() {
-  Outline::trackingVisited("visit");
-  checkRedirect();
-  return new WP_REST_Response(['message' => 'Successfully created.']);
+  $onOff = get_option('on_off');
+  if ($onOff == 'on') {
+    Outline::trackingVisited("visit");
+    checkRedirect();
+    return new WP_REST_Response(['message' => 'Successfully created.']);
+  }
 }
 
 function at_rest_salvation_endpoint() {
-  Outline::trackingVisited("salvation");
-  checkRedirect();
-  return new WP_REST_Response(['message' => 'Successfully created.']);
+  $onOff = get_option('on_off');
+  if ($onOff == 'on') {
+    Outline::trackingVisited("salvation");
+    checkRedirect();
+    return new WP_REST_Response(['message' => 'Successfully created.']);
+  }
 }
 
 function at_rest_discipleship_endpoint() {
-  Outline::trackingVisited("discipleship");
-  checkRedirect();
-  return new WP_REST_Response(['message' => 'Successfully created.']);
+  $onOff = get_option('on_off');
+  if ($onOff == 'on') {
+    Outline::trackingVisited("discipleship");
+    checkRedirect();
+    return new WP_REST_Response(['message' => 'Successfully created.']);
+  }
 }
 
 function checkRedirect() {

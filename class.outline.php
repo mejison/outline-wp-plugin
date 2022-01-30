@@ -16,8 +16,11 @@ class Outline {
 	}
 
 	public static function gformSubmitHook($form) {
-		if(self::isSalvationForm($form['form_id'])) {
-			self::trackingVisited("salvation");
+		$onOff = get_option('on_off');
+		if ($onOff == 'on') {
+			if(self::isSalvationForm($form['form_id'])) {
+				self::trackingVisited("salvation");
+			}
 		}
 	}
 
