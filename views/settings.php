@@ -43,26 +43,42 @@
                 <h2>
                     Buttons
                 </h2>
+                    <div>
+                        <input id="btn-url" type="text" value="" placeholder="Enter your redirect URI ..." />
+                    </div>
+            
                 <?php 
                     ob_start();
                 ?>
-                    <a href="<?php echo isset($_SERVER['HTTPS']) ? 'https' : 'http'; ?>://<?=$_SERVER['SERVER_NAME']?>/wp-json/outline/v1/salvation?redirect-back=1" target="_blank">Yes</a>
+                    <a href="<?php echo isset($_SERVER['HTTPS']) ? 'https' : 'http'; ?>://<?=$_SERVER['SERVER_NAME']?>/wp-json/outline/v1/salvation?redirect=" target="_blank">Yes</a>
                 <?php
                     $html = ob_get_contents();
                     ob_end_clean();
                 ?>
                 <section class="copy-section">
-                    <span class="copy-btn" onclick="select_all(event)">
+                    <!-- <span class="copy-btn" onclick="select_all(event)">
                         Copy
-                    </span>
+                    </span> -->
                     <pre><code><?php echo trim(htmlspecialchars($html)); ?></code></pre>
                 </section>
                 <script type="text/javascript">
+                    window.onload = function() {
+                        const element = document.getElementById('btn-url');
+                        element.addEventListener('input', function(e) {
+                            const value = e.target.value;
+                            const target = document.querySelector('pre');
+                            const prefix = `<a href="<?php echo isset($_SERVER['HTTPS']) ? 'https' : 'http'; ?>://<?=$_SERVER['SERVER_NAME']?>/wp-json/outline/v1/salvation?redirect=`;
+                            const postfix = `" target="_blank">Yes</a>`;
+                            target.innerText = `${prefix}${value}${postfix}`
+                        })
+                    }
+
                     function select_all(event) {
                         event.preventDefault();
                         const input = document.createElement('input');
-                        const html = `<?=$html?>`;
-                        input.value = html.trim();
+                        const element = document.getElementById('btn-url');
+                        const target = document.querySelector('pre');
+                        input.value = target.innerText;
                         document.body.appendChild(input);
                         input.focus();
                         input.select();
@@ -87,6 +103,10 @@
                         background-color: #272822;
                         padding: 5px;
                         border-radius: 0.3em;
+                        color: #fff;
+                        padding-right: 45px;
+                        overflow: auto;
+                        max-width: 800px;
                     }
 
                     .copy-btn {

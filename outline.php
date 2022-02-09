@@ -55,10 +55,9 @@ function at_rest_discipleship_endpoint() {
 }
 
 function checkRedirect() {
-  if(isset($_GET['redirect-back'])) {
-    $url = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : get_home_url();
+  if(isset($_GET['redirect'])) {
     header("HTTP/1.1 301 Moved Permanently"); 
-    header("Location: " . $url);
+    header("Location: " . $_GET['redirect']);
     exit();
   }
 }
