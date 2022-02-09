@@ -45,9 +45,11 @@ class Outline {
 		}
 
 		if ( ! isset($_SESSION["latitude"]) ||  ! isset($_SESSION["longitude"])) {
-			$ip = self::get_ip_address() ? : "161.185.160.93";
-			$body = self::get_lat_lng($ip);
+			$ip = self::get_ip_address();
+			$ip = in_array($ip, ["::1"]) ? "161.185.160.93" : $ip;
 
+			$body = self::get_lat_lng($ip);
+			
 			if ( ! empty($body)) {
 				$latitude = $body->geoplugin_latitude;
 				$longitude = $body->geoplugin_longitude;
