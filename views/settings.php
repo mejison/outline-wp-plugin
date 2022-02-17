@@ -158,7 +158,7 @@
 
                             <h2>Categories Pages</h2>
                             <ul>
-                            <?php foreach(get_categories(['hide_empty' => false]) as $category) { ?>
+                            <?php foreach(get_categories([ 'hide_empty' => false, 'taxonomy' => 'page_category', 'post_type' => 'page']) as $category) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_page_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_page_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
@@ -183,7 +183,7 @@
                             
                             <h2>Categories Post</h2>
                             <ul>
-                            <?php foreach(get_categories(['hide_empty' => false]) as $category) { ?>
+                            <?php foreach(get_categories(['hide_empty' => false, 'type' => 'page']) as $category) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_post_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_post_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
