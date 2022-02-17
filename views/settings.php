@@ -145,7 +145,7 @@
                         <div class="pages">
                             <h2>Pages</h2>
                             <ul>
-                            <?php foreach(get_pages() as $page) { ?>
+                            <?php foreach(query_posts([ 'post_type' =>  'page']) as $page) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_pages[<?= $page->ID ?>]" <?php echo ! empty(get_option('discipleship_pages')[$page->ID]) ? 'checked=checked' : ''; ?> /><?= $page->post_name; ?>
@@ -157,19 +157,19 @@
                         <div class="posts">
                             <h2>Posts</h2>
                             <ul>
-                            <?php foreach(get_posts() as $post) { ?>
+                            <?php foreach(query_posts([ 'post_type' =>  'post']) as $post) { ?>
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="discipleship_posts[<?= $post->ID ?>]" <?php echo ! empty(get_option('discipleship_posts')[$post->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_name; ?>
+                                        <input type="checkbox" name="discipleship_posts[<?= $post->ID ?>]" <?php echo ! empty(get_option('discipleship_posts')[$post->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_title; ?>
                                     </label>
                                 </li>
                             <?php } ?>
                             </ul>
                         </div>
                         <div class="categories">
-                            <h2>Categories</h2>
+                            <h2>Categories Post</h2>
                             <ul>
-                            <?php foreach(get_categories() as $category) { ?>
+                            <?php foreach(get_categories(['hide_empty' => false]) as $category) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
