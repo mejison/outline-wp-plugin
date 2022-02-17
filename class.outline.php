@@ -25,7 +25,11 @@ class Outline {
 	}
 
 	public static function trackingVisited($eventType = 'visit') {
-		if (self::isDiscipleshipCategories()) {
+		if (self::isDiscipleshipPostCategories()) {
+			$eventType = 'discipleship';
+		}
+
+		if (self::isDiscipleshipPageCategories()) {
 			$eventType = 'discipleship';
 		}
 
@@ -104,8 +108,17 @@ class Outline {
 		return in_array($pageID, $trackingPages);
 	}
 
-	private static function isDiscipleshipCategories() {
-		$trackingCategories = get_option('discipleship_categories') ? array_keys(get_option('discipleship_categories')) : [];
+	private static function isDiscipleshipPostCategories() {
+		$trackingCategories = get_option('discipleship_post_categories') ? array_keys(get_option('discipleship_post_categories')) : [];
+		$currentCategories = array_map(function($item) {
+			return $item->cat_ID;
+		}, get_the_category() ? get_the_category() : []);
+
+		return count(array_intersect($trackingCategories, $currentCategories));
+	}
+
+	private static function isDiscipleshipPageCategories() {
+		$trackingCategories = get_option('discipleship_page_categories') ? array_keys(get_option('discipleship_page_categories')) : [];
 		$currentCategories = array_map(function($item) {
 			return $item->cat_ID;
 		}, get_the_category() ? get_the_category() : []);

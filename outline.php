@@ -83,7 +83,8 @@ add_action('rest_api_init', 'at_rest_init');
 
 function settings() {
   register_setting( 'plugin-settings-group', 'on_off' );
-  register_setting( 'plugin-settings-group', 'discipleship_categories' );
+  register_setting( 'plugin-settings-group', 'discipleship_post_categories' );
+  register_setting( 'plugin-settings-group', 'discipleship_page_categories' );
   register_setting( 'plugin-settings-group', 'discipleship_pages');
   register_setting( 'plugin-settings-group', 'discipleship_posts');
   register_setting( 'plugin-settings-group', 'salvation');

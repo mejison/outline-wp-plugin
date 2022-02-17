@@ -148,7 +148,20 @@
                             <?php foreach(query_posts([ 'post_type' =>  'page', 'posts_per_page' => -1]) as $page) { ?>
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="discipleship_pages[<?= $page->ID ?>]" <?php echo ! empty(get_option('discipleship_pages')[$page->ID]) ? 'checked=checked' : ''; ?> /><?= $page->post_name; ?>
+                                        <input type="checkbox" name="discipleship_pages[<?= $page->ID ?>]" <?php echo ! empty(get_option('discipleship_pages')[$page->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_title ? $post->post_title : $page->post_name; ?>
+                                    </label>
+                                </li>
+                            <?php } ?>
+                            </ul>
+
+                            <br />
+
+                            <h2>Categories Pages</h2>
+                            <ul>
+                            <?php foreach(get_categories(['hide_empty' => false]) as $category) { ?>
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="discipleship_page_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_page_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
                                     </label>
                                 </li>
                             <?php } ?>
@@ -160,19 +173,20 @@
                             <?php foreach(query_posts([ 'post_type' =>  'post', 'posts_per_page' => -1]) as $post) { ?>
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="discipleship_posts[<?= $post->ID ?>]" <?php echo ! empty(get_option('discipleship_posts')[$post->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_title; ?>
+                                        <input type="checkbox" name="discipleship_posts[<?= $post->ID ?>]" <?php echo ! empty(get_option('discipleship_posts')[$post->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_title ? $post->post_title : $page->post_name; ?>
                                     </label>
                                 </li>
                             <?php } ?>
                             </ul>
-                        </div>
-                        <div class="categories">
+
+                            <hr />
+                            
                             <h2>Categories Post</h2>
                             <ul>
                             <?php foreach(get_categories(['hide_empty' => false]) as $category) { ?>
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="discipleship_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
+                                        <input type="checkbox" name="discipleship_post_categories[<?= $category->cat_ID ?>]" <?php echo ! empty(get_option('discipleship_post_categories')[$category->cat_ID]) ? 'checked=checked' : ''; ?> /><?= $category->name; ?>
                                     </label>
                                 </li>
                             <?php } ?>
