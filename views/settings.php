@@ -145,7 +145,7 @@
                         <div class="pages">
                             <h2>Pages</h2>
                             <ul>
-                            <?php foreach(query_posts([ 'post_type' =>  'page']) as $page) { ?>
+                            <?php foreach(query_posts([ 'post_type' =>  'page', 'posts_per_page' => -1]) as $page) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_pages[<?= $page->ID ?>]" <?php echo ! empty(get_option('discipleship_pages')[$page->ID]) ? 'checked=checked' : ''; ?> /><?= $page->post_name; ?>
@@ -157,7 +157,7 @@
                         <div class="posts">
                             <h2>Posts</h2>
                             <ul>
-                            <?php foreach(query_posts([ 'post_type' =>  'post']) as $post) { ?>
+                            <?php foreach(query_posts([ 'post_type' =>  'post', 'posts_per_page' => -1]) as $post) { ?>
                                 <li>
                                     <label>
                                         <input type="checkbox" name="discipleship_posts[<?= $post->ID ?>]" <?php echo ! empty(get_option('discipleship_posts')[$post->ID]) ? 'checked=checked' : ''; ?> /><?= $post->post_title; ?>
